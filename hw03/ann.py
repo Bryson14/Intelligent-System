@@ -143,6 +143,12 @@ class ann(object):
                         for (x, y) in test_data]
         return sum(int(x == y) for (x, y) in test_results)
 
+    def answers(self, test_data):
+        """Returns the outputed answers to all the test data in a list"""
+        test_results = [np.argmax(self.feedforward(x))
+                        for (x, y) in test_data]
+        return np.array(test_results)
+
     def cost_derivative(self, output_activations, y):
         """Return the vector of partial derivatives \partial C_x /
         \partial a for the output activations."""
