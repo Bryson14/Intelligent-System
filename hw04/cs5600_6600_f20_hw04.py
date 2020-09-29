@@ -184,8 +184,9 @@ def collect_3_hidden_layer_net_stats(lower_num_hidden_nodes,
     anns[best_idx].save(file)
     return results
 
-etas = {0.1, 0.2, 0.3, 0.5}
-lambdas = {0.001, 0.01, 0.1, 1}
+
+etas = {0.1, 0.3, 0.5}
+lambdas = {0.01, 0.1, 1}
 
 for eta in etas:
     for lam in lambdas:
