@@ -5,6 +5,7 @@ import numpy as np
 import scipy as sp
 import matplotlib.pyplot as plt
 import pathlib as path
+from mnist_loader import load_data_wrapper
 
 ##########################
 # Bryson Meiling
@@ -15,6 +16,8 @@ import pathlib as path
 ##########################
 
 #### Libraries
+json_nets_path = path.Path(r"json_nets")
+train_d, valid_d, test_d = load_data_wrapper()
 
 #### auxiliary functions
 def load(filename):
@@ -68,8 +71,8 @@ def collect_1_hidden_layer_net_stats(lower_num_hidden_nodes,
     assert lower_num_hidden_nodes < upper_num_hidden_nodes
     results = {}
     anns = {}
-    for i in range(lower_num_hidden_nodes, upper_num_hidden_nodes + 1, 1):
-        print(f"Training ANN f{i}, from {lower_num_hidden_nodes} to {upper_num_hidden_nodes}")
+    for i in range(lower_num_hidden_nodes, upper_num_hidden_nodes + 1, 10):
+        print(f"Training ANN {i}, from {lower_num_hidden_nodes} to {upper_num_hidden_nodes}")
         net = ann([784, i, 10], cost=cost_function)
         net_stats = net.mini_batch_sgd(train_data,
                                        num_epochs, mbs, eta, lmbda,
@@ -87,8 +90,7 @@ def collect_1_hidden_layer_net_stats(lower_num_hidden_nodes,
         if results[key][3][-1] > best_accuracy:
             best_accuracy = results[key][3][-1]
             best_idx = key
-    p = path.Path(r"C:\Users\Bryson M\Documents\USU\Classes\Intelligent Systems\hw04\json_nets")
-    file = path.Path().joinpath(p, "net1.json")
+    file = path.Path().joinpath(json_nets_path, f"net1_{best_idx}_eta-{eta}_lambda-{lmbda}.json")
     anns[best_idx].save(file)
     return results
 
@@ -105,8 +107,8 @@ def collect_2_hidden_layer_net_stats(lower_num_hidden_nodes,
     assert lower_num_hidden_nodes < upper_num_hidden_nodes
     results = {}
     anns = {}
-    for i in range(lower_num_hidden_nodes, upper_num_hidden_nodes + 1, 1):
-        for j in range(lower_num_hidden_nodes, upper_num_hidden_nodes + 1, 1):
+    for i in range(lower_num_hidden_nodes, upper_num_hidden_nodes + 1, 10):
+        for j in range(lower_num_hidden_nodes, upper_num_hidden_nodes + 1, 10):
             print(f"Training ANN {i}_{j}, from {lower_num_hidden_nodes} to {upper_num_hidden_nodes}")
             net = ann([784, i, j, 10], cost=cost_function)
             net_stats = net.mini_batch_sgd(train_data,
@@ -125,8 +127,7 @@ def collect_2_hidden_layer_net_stats(lower_num_hidden_nodes,
         if results[key][3][-1] > best_accuracy:
             best_accuracy = results[key][3][-1]
             best_idx = key
-    p = path.Path(r"C:\Users\Bryson M\Documents\USU\Classes\Intelligent Systems\hw04\json_nets")
-    file = path.Path().joinpath(p, f"net2_{best_idx}.json")
+    file = path.Path().joinpath(json_nets_path, f"net2_{best_idx}_eta-{eta}_lambda-{lmbda}.json")
     anns[best_idx].save(file)
     return results
     
@@ -140,12 +141,27 @@ def collect_3_hidden_layer_net_stats(lower_num_hidden_nodes,
                                      lmbda,
                                      train_data,
                                      eval_data):
+    """
+    For the assignment, if there was to be a triple for loop between 30 to 100 by 1, that would be 343,000 permutations.
+    This is an insane amount and is not feasible for a week long assignment. Therefore, the step size of each for
+    loop is 10, which reduces the permutations to 512.
+    :param lower_num_hidden_nodes:
+    :param upper_num_hidden_nodes:
+    :param cost_function:
+    :param num_epochs:
+    :param mbs:
+    :param eta:
+    :param lmbda:
+    :param train_data:
+    :param eval_data:
+    :return:
+    """
     assert lower_num_hidden_nodes < upper_num_hidden_nodes
     results = {}
     anns = {}
-    for i in range(lower_num_hidden_nodes, upper_num_hidden_nodes + 1, 1):
-        for j in range(lower_num_hidden_nodes, upper_num_hidden_nodes + 1, 1):
-            for k in range(lower_num_hidden_nodes, upper_num_hidden_nodes + 1, 1):
+    for i in range(lower_num_hidden_nodes, upper_num_hidden_nodes + 1, 10):
+        for j in range(lower_num_hidden_nodes, upper_num_hidden_nodes + 1, 10):
+            for k in range(lower_num_hidden_nodes, upper_num_hidden_nodes + 1, 10):
                 print(f"Training ANN {i}_{j}_{k}, from {lower_num_hidden_nodes} to {upper_num_hidden_nodes}")
                 net = ann([784, i, j, k, 10], cost=cost_function)
                 net_stats = net.mini_batch_sgd(train_data,
@@ -164,7 +180,9 @@ def collect_3_hidden_layer_net_stats(lower_num_hidden_nodes,
         if results[key][3][-1] > best_accuracy:
             best_accuracy = results[key][3][-1]
             best_idx = key
-    p = path.Path(r"C:\Users\Bryson M\Documents\USU\Classes\Intelligent Systems\hw04\json_nets")
-    file = path.Path().joinpath(p, f"net3_{best_idx}.json")
+    file = path.Path().joinpath(json_nets_path, f"net3_{best_idx}_eta-{eta}_lambda-{lmbda}.json")
     anns[best_idx].save(file)
     return results
+
+
+collect_1_hidden_layer_net_stats(10, 11, CrossEntropyCost, 2, 10, 0.1, 0.0, train_d, test_d)
