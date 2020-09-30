@@ -234,15 +234,15 @@ def collect_3_hidden_layer_net_stats(lower_num_hidden_nodes,
 
 
 etas = {0.3, 0.7}
-lambdas = {0.01, 0.1, 1}
+lambdas = {0.1, 0.7}
 
 
 etas = {0.3}
-lambdas = {1.0}
+lambdas = {0.7}
 
-#30 50
-#50 70
-#70 90
+#60 70
+#70 80
+#80 90
 #90 100
 
 for e in etas:
