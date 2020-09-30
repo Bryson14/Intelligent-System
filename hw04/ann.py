@@ -332,3 +332,17 @@ class ann(object):
         f = open(filename, "w")
         json.dump(data, f)
         f.close()
+
+    def load(self, filename):
+        """Loads a neural network from the file `filename`."""
+        with open(filename, "r") as file:
+            data = json.load(file)
+        self.num_layers = len(data['sizes'])
+        self.sizes = data["sizes"]
+        self.init_weights()
+        loaded_weights = []
+        for layer in data["weights"]:
+            np_layer = np.array(layer)
+            loaded_weights.append(np_layer)
+        self.weights = loaded_weights
+        self.cost = data["cost"]

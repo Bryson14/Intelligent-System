@@ -72,6 +72,7 @@ def collect_1_hidden_layer_net_stats(lower_num_hidden_nodes,
     This was the worst preforming network structure. Despite the size of the first layer, it couldn't compete with the
     averages of the deeper layered networks. This function iterates inside of a nested for loop that cahgnes the eta
     and lambdas to achieve the best results.
+    The best net was found with the sizes [784,85,10] with an eta = 0.5 and lambda = 0.1 with an accuracy of 9661
     :param lower_num_hidden_nodes: The lower bound for the hidden layer size
     :param upper_num_hidden_nodes:The upper bound for the hidden layer size
     :param cost_function: The cost function used to train
@@ -129,6 +130,7 @@ def collect_2_hidden_layer_net_stats(lower_num_hidden_nodes,
     case, but as a general rule, it held true. Training was slower than expected, but it did not take as long at the
     three layer networks. The for loops changed step by 10 each time to reduce the number of permutations from
     astronomical numbers to something more manageable in a week long time frame.
+    The best net was found with the sizes [784,70,60,10] with an eta = 0.5 and lambda = 0.1 with an accuracy of 9636
     :param lower_num_hidden_nodes: The lower bound for the hidden layer size
     :param upper_num_hidden_nodes:The upper bound for the hidden layer size
     :param cost_function: The cost function used to train
@@ -231,10 +233,10 @@ def collect_3_hidden_layer_net_stats(lower_num_hidden_nodes,
     return results
 
 
-etas = {0.1, 0.3, 0.5}
+etas = {0.3, 0.7}
 lambdas = {0.01, 0.1, 1}
 
 for e in etas:
     for lam in lambdas:
         print(f"eta = {e},  lambda = {lam}")
-        collect_2_hidden_layer_net_stats(30, 100, CrossEntropyCost, 30, 10, e, lam, train_d, test_d)
+        collect_3_hidden_layer_net_stats(30, 100, CrossEntropyCost, 30, 10, e, lam, train_d, test_d)
