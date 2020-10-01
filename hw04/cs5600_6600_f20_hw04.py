@@ -187,8 +187,10 @@ def collect_3_hidden_layer_net_stats(lower_num_hidden_nodes,
     For the assignment, if there was to be a triple for loop between 30 to 100 by 1, that would be 343,000 permutations.
     This is an insane amount and is not feasible for a week long assignment. Therefore, the step size of each for
     loop is 10, which reduces the permutations to 512. Even from the beginning of the testing, a deeper three layer
-    network outpreforms the 2 or 1 layer networks. Average scores were in the 96%s where as the shallower networks
-    were in the 94 - 95% region.
+    network outperforms the 2 or 1 layer networks, but just barely. Actually not as much I hoped. There seems to be an
+    limit to the capabilities of a plain ANN. Average scores were in the 96%s where as the shallower networks
+    were in the 94 - 95% region. The Best network with three hidden layers was 784x85x75x75x10 with an accuracy of 9678
+    and a cost of 4.40
     :param lower_num_hidden_nodes: The lower bound for the hidden layer size
     :param upper_num_hidden_nodes:The upper bound for the hidden layer size
     :param cost_function: The cost function used to train
@@ -233,11 +235,11 @@ def collect_3_hidden_layer_net_stats(lower_num_hidden_nodes,
     return results
 
 
-etas = {0.3, 0.7}
+etas = {0.3, 0.6}
 lambdas = {0.1, 0.7}
 
 
-etas = {0.3}
+etas = {0.6}
 lambdas = {0.7}
 
 #45 55
@@ -248,4 +250,4 @@ lambdas = {0.7}
 for e in etas:
     for lam in lambdas:
         print(f"eta = {e},  lambda = {lam}")
-        collect_3_hidden_layer_net_stats(30, 100, CrossEntropyCost, 30, 10, e, lam, train_d, test_d)
+        collect_3_hidden_layer_net_stats(75,85, CrossEntropyCost, 30, 10, e, lam, train_d, test_d)

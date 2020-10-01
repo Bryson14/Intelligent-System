@@ -345,4 +345,5 @@ class ann(object):
             np_layer = np.array(layer)
             loaded_weights.append(np_layer)
         self.weights = loaded_weights
-        self.cost = data["cost"]
+        if data['cost'] == "crossEntropyCost":
+            self.cost = CrossEntropyCost
