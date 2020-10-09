@@ -13,7 +13,6 @@ import tflearn
 from tflearn.layers.core import input_data, fully_connected, dropout
 from tflearn.layers.conv import conv_2d, max_pool_2d
 from tflearn.layers.estimator import regression
-import tflearn.datasets.mnist as mnist
 
 
 def define_convnet_slide22_architecture(load=False):
@@ -60,12 +59,13 @@ def load_shallow_tfl_ann(model_path):
     pass
 
 def fit_tfl_model(model, trainX, trainY, testX, testY, model_name, net_path, n_epoch=1, mbs=10):
-    # your code here
-    pass
+    model.fit(trainX, trainY, n_epoch=n_epoch, shuffle=True, validation_set=(testX, testY), show_metric=True,
+              batch_size=mbs, run_id ="MNIST_ConvNet_1")
+    model.save(Path.joinpath(net_path, model_name))
+
 
 def test_tfl_model(model, X, Y):
-    # your code here
-    pass
+    return model.evaluate(X, Y)
         
     
         
