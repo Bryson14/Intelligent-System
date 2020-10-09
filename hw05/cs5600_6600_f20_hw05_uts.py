@@ -29,7 +29,7 @@ testX = testX.reshape([-1, 28, 28, 1])
 validX = validX.reshape([-1, 28, 28, 1])
 
 ## change this directory accordingly.
-NET_PATH = '/home/vladimir/teaching/AI/F20/hw/hw05/nets/'
+NET_PATH = '/nets/'
 
 class cs5600_6600_f20_hw05_uts(unittest.TestCase):
 
