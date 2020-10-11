@@ -29,7 +29,10 @@ testX = testX.reshape([-1, 28, 28, 1])
 validX = validX.reshape([-1, 28, 28, 1])
 
 ## change this directory accordingly.
-NET_PATH = '/nets/'
+
+my_path = Path.joinpath(Path.cwd(), 'nets\\')
+assert my_path.is_dir()
+NET_PATH = str(my_path.absolute()) + "\\"
 
 class cs5600_6600_f20_hw05_uts(unittest.TestCase):
 
@@ -90,7 +93,7 @@ class cs5600_6600_f20_hw05_uts(unittest.TestCase):
         fit_tfl_model(shallow_model,
                       trainX, trainY, testX, testY,
                       model_name, NET_PATH,
-                      n_epoch=5, mbs=10)
+                      n_epoch=10, mbs=10)
 
     def test_ut07(self):
         tf.reset_default_graph()
@@ -99,7 +102,8 @@ class cs5600_6600_f20_hw05_uts(unittest.TestCase):
         assert shallow_model is not None
         acc = test_tfl_model(shallow_model, validX, validY)
         print('Shallow ConvNet Acc = {}'.format(acc))
-    
+
+
 if __name__ == '__main__':
     unittest.main()
     pass
