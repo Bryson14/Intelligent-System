@@ -247,7 +247,7 @@ lambdas = {0.7}
 #75 85
 #90 100
 
-for e in etas:
-    for lam in lambdas:
-        print(f"eta = {e},  lambda = {lam}")
-        collect_3_hidden_layer_net_stats(75,85, CrossEntropyCost, 30, 10, e, lam, train_d, test_d)
+# for e in etas:
+#     for lam in lambdas:
+#         print(f"eta = {e},  lambda = {lam}")
+#         collect_3_hidden_layer_net_stats(75,85, CrossEntropyCost, 30, 10, e, lam, train_d, test_d)
