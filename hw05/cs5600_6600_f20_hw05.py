@@ -90,6 +90,3 @@ def fit_tfl_model(model, trainX, trainY, testX, testY, model_name, net_path, n_e
 
 def test_tfl_model(model, X, Y):
     return model.evaluate(X, Y)
-        
-    
-        

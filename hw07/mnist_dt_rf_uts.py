@@ -33,6 +33,6 @@ class mnist_dt_rf_uts(unittest.TestCase):
         low_nt, high_nt = 10, 50
         fit_validate_rfs(low_nt, high_nt)
     
-if __name__ == '__main__':
-    unittest.main()
-    pass
+# if __name__ == '__main__':
+#     unittest.main()
+#     pass
