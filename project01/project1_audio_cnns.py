@@ -6,6 +6,7 @@
 ########################################################
 
 import pickle
+import pathlib
 import numpy as np
 import tensorflow as tf
 import tflearn
@@ -20,12 +21,13 @@ def load(file_name):
     return obj
 
 ## Paths to all datasets. Change accordingly.
-BUZZ1_base_path='/home/vladimir/teaching/AI/F20/project_01/datasets/BUZZ1/'
-BUZZ2_base_path='/home/vladimir/teaching/AI/F20/project_01/datasets/BUZZ2/'
-BUZZ3_base_path='/home/vladimir/teaching/AI/F20/project_01/datasets/BUZZ3/'
+dataset_path = pathlib.Path("datasets")
+BUZZ1_base_path = str(dataset_path.joinpath('BUZZ1').absolute())
+BUZZ2_base_path = str(dataset_path.joinpath('BUZZ2').absolute())
+BUZZ3_base_path =  str(dataset_path.joinpath('BUZZ3').absolute())
 
 ## let's load BUZZ1
-base_path = BUZZ1_base_path
+base_path = BUZZ1_base_path + "\\"
 print('loading datasets from {}...'.format(base_path))
 BUZZ1_train_X = load(base_path + 'train_X.pck')
 BUZZ1_train_Y = load(base_path + 'train_Y.pck')
@@ -50,7 +52,7 @@ assert BUZZ1_test_X.shape[0]  == BUZZ1_test_Y.shape[0]
 assert BUZZ1_valid_X.shape[0] == BUZZ1_valid_Y.shape[0]
 
 ## let's load BUZZ2
-base_path = BUZZ2_base_path
+base_path = BUZZ2_base_path + "\\"
 print('loading datasets from {}...'.format(base_path))
 BUZZ2_train_X = load(base_path + 'train_X.pck')
 BUZZ2_train_Y = load(base_path + 'train_Y.pck')
@@ -73,7 +75,7 @@ assert BUZZ2_test_X.shape[0]  == BUZZ2_test_Y.shape[0]
 assert BUZZ2_valid_X.shape[0] == BUZZ2_valid_Y.shape[0]
 
 ## let's load BUZZ3
-base_path = BUZZ3_base_path
+base_path = BUZZ3_base_path + "\\"
 print('loading datasets from {}...'.format(base_path))
 BUZZ3_train_X = load(base_path + 'train_X.pck')
 BUZZ3_train_Y = load(base_path + 'train_Y.pck')

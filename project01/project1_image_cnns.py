@@ -6,6 +6,7 @@
 ########################################################
 
 import pickle
+import pathlib
 import numpy as np
 import tensorflow as tf
 import tflearn
@@ -20,12 +21,13 @@ def load(file_name):
     return obj
 
 ## Paths to all datasets. Change accordingly.
-BEE1_path='/home/vladimir/teaching/AI/F20/project_01/datasets/BEE1/'
-BEE2_1S_path='/home/vladimir/teaching/AI/F20/project_01/datasets/BEE2_1S/'
-BEE4_path='/home/vladimir/teaching/AI/F20/project_01/datasets/BEE4/'
+dataset_path = pathlib.Path("datasets")
+BEE1_path = str(dataset_path.joinpath('BEE1').absolute())
+BEE2_1S_path = str(dataset_path.joinpath('BEE2_1S').absolute())
+BEE4_path =  str(dataset_path.joinpath('BEE4').absolute())
 
 ## let's load BEE1
-base_path = BEE1_path
+base_path = BEE1_path + "\\"
 print('loading datasets from {}...'.format(base_path))
 BEE1_train_X = load(base_path + 'train_X.pck')
 BEE1_train_Y = load(base_path + 'train_Y.pck')
@@ -50,7 +52,7 @@ assert BEE1_test_X.shape[0]  == BEE1_test_Y.shape[0]
 assert BEE1_valid_X.shape[0] == BEE1_valid_Y.shape[0]
 
 ## let's load BEE2_1S
-base_path = BEE2_1S_path
+base_path = BEE2_1S_path + "\\"
 print('loading datasets from {}...'.format(base_path))
 BEE2_1S_train_X = load(base_path + 'train_X.pck')
 BEE2_1S_train_Y = load(base_path + 'train_Y.pck')
@@ -73,7 +75,7 @@ assert BEE2_1S_test_X.shape[0]  == BEE2_1S_test_Y.shape[0]
 assert BEE2_1S_valid_X.shape[0] == BEE2_1S_valid_Y.shape[0]
 
 ## let's load BEE4
-base_path = BEE4_path
+base_path = BEE4_path + "\\"
 print('loading datasets from {}...'.format(base_path))
 BEE4_train_X = load(base_path + 'train_X.pck')
 BEE4_train_Y = load(base_path + 'train_Y.pck')
