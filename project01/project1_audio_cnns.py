@@ -100,12 +100,18 @@ assert BUZZ3_valid_X.shape[0] == BUZZ3_valid_Y.shape[0]
 def make_audio_cnn_model():
     input_layer = input_data(shape=[None, 4000, 1, 1])
     conv_layer_1 = conv_2d(input_layer,
-                           nb_filter=8,
-                           filter_size=3,
+                           nb_filter=12,
+                           filter_size=2,
                            activation='relu',
                            name='conv_layer_1')
     pool_layer_1 = max_pool_2d(conv_layer_1, 2, name='pool_layer_1')
-    fc_layer_1 = fully_connected(pool_layer_1, 128,
+    conv_layer_2 = conv_2d(pool_layer_1,
+                           nb_filter=10,
+                           filter_size=3,
+                           activation='relu',
+                           name='conv_layer_2')
+    pool_layer_2 = max_pool_2d(conv_layer_2, 2, name='pool_layer_2')
+    fc_layer_1 = fully_connected(pool_layer_2, 256,
                                  activation='relu',
                                  name='fc_layer_1')
     fc_layer_2 = fully_connected(fc_layer_1, 3,
@@ -113,7 +119,7 @@ def make_audio_cnn_model():
                                  name='fc_layer_2')
     network = regression(fc_layer_2, optimizer='sgd',
                          loss='categorical_crossentropy',
-                         learning_rate=0.1)
+                         learning_rate=0.05)
     model = tflearn.DNN(network)
     return model
 
@@ -154,5 +160,13 @@ def train_tfl_audio_cnn_model(model, train_X, train_Y, test_X, test_Y, num_epoch
             run_id='audio_ann_model')
 
 ### validating is testing on valid_X and valid_Y.
-def validate_tfl_audio_cnn_model(model, valid_X, valid_Y):
-    return test_tfl_audio_cnn_model(model, valid_X, valid_Y)
+def validate_tfl_audio_cnn_model(model):
+    return test_tfl_audio_cnn_model(model, BUZZ3_valid_X, BUZZ3_valid_Y)
+
+buzz1_net_name = "cnn_audio_model_buzz1.tfl"
+buzz2_net_name = "cnn_audio_model_buzz2.tfl"
+buzz3_net_name = "cnn_audio_model_buzz3.tfl"
+
+# model = make_audio_cnn_model()
+# train_tfl_audio_cnn_model(model, BUZZ3_train_X, BUZZ3_train_Y, BUZZ3_test_X, BUZZ3_test_Y, 20, 8)
+# model.save("nets\\cnn_audio_model_buzz3.tfl")

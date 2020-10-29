@@ -101,18 +101,33 @@ assert BEE4_valid_X.shape[0] == BEE4_valid_Y.shape[0]
 def make_image_cnn_model():
     input_layer = input_data(shape=[None, 64, 64, 3])
     conv_layer_1 = conv_2d(input_layer,
-                           nb_filter=8,
+                           nb_filter=12,
                            filter_size=3,
                            activation='relu',
                            name='conv_layer_1')
     pool_layer_1 = max_pool_2d(conv_layer_1, 2, name='pool_layer_1')
-    fc_layer_1 = fully_connected(pool_layer_1, 128,
+    conv_layer_2 = conv_2d(pool_layer_1,
+                           nb_filter=10,
+                           filter_size=3,
+                           activation='sigmoid',
+                           name='conv_layer_2')
+    pool_layer_2 = max_pool_2d(conv_layer_2, 2, name='pool_layer_2')
+    conv_layer_3 = conv_2d(pool_layer_2,
+                           nb_filter=8,
+                           filter_size=3,
+                           activation='relu',
+                           name='conv_layer_3')
+    pool_layer_3 = max_pool_2d(conv_layer_3, 2, name='pool_layer_3')
+    fc_layer_1 = fully_connected(pool_layer_3, 64,
                                  activation='relu',
                                  name='fc_layer_1')
-    fc_layer_2 = fully_connected(fc_layer_1, 2,
-                                 activation='softmax',
+    fc_layer_2 = fully_connected(fc_layer_1, 128,
+                                 activation='relu',
                                  name='fc_layer_2')
-    network = regression(fc_layer_2, optimizer='sgd',
+    fc_layer_3 = fully_connected(fc_layer_2, 2,
+                                 activation='softmax',
+                                 name='fc_layer_3')
+    network = regression(fc_layer_3, optimizer='sgd',
                          loss='categorical_crossentropy',
                          learning_rate=0.1)
     model = tflearn.DNN(network)
@@ -126,7 +141,13 @@ def load_image_cnn_model(model_path):
                            activation='relu',
                            name='conv_layer_1')
     pool_layer_1 = max_pool_2d(conv_layer_1, 2, name='pool_layer_1')
-    fc_layer_1 = fully_connected(pool_layer_1, 128,
+    conv_layer_2 = conv_2d(pool_layer_1,
+                           nb_filter=8,
+                           filter_size=3,
+                           activation='relu',
+                           name='conv_layer_2')
+    pool_layer_2 = max_pool_2d(conv_layer_2, 2, name='pool_layer_2')
+    fc_layer_1 = fully_connected(pool_layer_2, 64,
                                  activation='relu',
                                  name='fc_layer_1')
     fc_layer_2 = fully_connected(fc_layer_1, 2,
@@ -158,4 +179,16 @@ def train_tfl_image_cnn_model(model, train_X, train_Y, test_X, test_Y, num_epoch
 def validate_tfl_image_cnn_model(model, valid_X, valid_Y):
     return test_tfl_image_cnn_model(model, valid_X, valid_Y)
   
+bee1_net_name = "cnn_image_model_bee1.tfl"
+bee2_net_name = "cnn_image_model_bee2_1s.tfl"
+bee3_net_name = "cnn_image_model_bee4.tfl"
 
+# # making and training
+# model = make_image_cnn_model()
+# train_tfl_image_cnn_model(model, BEE4_train_X, BEE4_train_Y, BEE4_test_X, BEE4_test_Y, 40, 8)
+# model.save("nets\\cnn_image_model_bee4.tfl")
+
+# validation
+from load_nets import load_cnn_image_model_bee1, load_cnn_image_model_bee2_1s, load_cnn_image_model_bee4
+model = load_cnn_image_model_bee4("nets\\cnn_image_model_bee4.tfl")
+print(validate_tfl_image_cnn_model(model, BEE4_valid_X, BEE4_valid_Y))

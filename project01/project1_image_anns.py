@@ -104,12 +104,21 @@ def make_image_ann_model():
     fc_layer_1 = fully_connected(input_layer, 128,
                                  activation='relu',
                                  name='fc_layer_1')
-    fc_layer_2 = fully_connected(fc_layer_1, 2,
+    fc_layer_2 = fully_connected(fc_layer_1, 128,
                                  activation='softmax',
                                  name='fc_layer_2')
-    network = regression(fc_layer_2, optimizer='sgd',
+    fc_layer_3 = fully_connected(fc_layer_2, 128,
+                                 activation='softmax',
+                                 name='fc_layer_3')
+    fc_layer_4 = fully_connected(fc_layer_3, 64,
+                                 activation='relu',
+                                 name='fc_layer_4')
+    fc_layer_5 = fully_connected(fc_layer_4, 2,
+                                 activation='sigmoid',
+                                 name='fc_layer_5')
+    network = regression(fc_layer_5, optimizer='sgd',
                          loss='categorical_crossentropy',
-                         learning_rate=0.1)
+                         learning_rate=0.01)
     model = tflearn.DNN(network)
     return model
 
@@ -147,7 +156,19 @@ def train_tfl_image_ann_model(model, train_X, train_Y, test_X, test_Y, num_epoch
             run_id='image_ann_model')
 
 ### validating is testing on valid_X and valid_Y.
-def validate_tfl_image_ann_model(model, valid_X, valid_Y):
-    return test_tfl_image_ann_model(model, valid_X, valid_Y)
+def validate_tfl_image_ann_model(model, validX, validY):
+    return test_tfl_image_ann_model(model, validX, validY)
 
-  
+bee1_net_name = "ann_image_model_bee1_gray.tfl"
+bee2_net_name = "ann_image_model_bee2_1s_gray.tfl"
+bee3_net_name = "ann_image_model_bee4_gray.tfl"
+
+# # making and training
+# model = make_image_ann_model()
+# train_tfl_image_ann_model(model, BEE4_gray_train_X, BEE4_gray_train_Y, BEE4_gray_test_X, BEE4_gray_test_Y, 40, 8)
+# model.save("nets\\ann_image_model_bee4_gray.tfl")
+
+# validation
+from load_nets import load_ann_image_model_bee1_gray, load_ann_image_model_bee2_1s_gray, load_ann_image_model_bee4_gray
+model = load_ann_image_model_bee4_gray("nets\\ann_image_model_bee4_gray.tfl")
+print(validate_tfl_image_ann_model(model, BEE4_gray_valid_X, BEE4_gray_valid_Y))

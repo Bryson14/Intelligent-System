@@ -101,13 +101,19 @@ assert BUZZ3_valid_X.shape[0] == BUZZ3_valid_Y.shape[0]
 ### plus the input layer and the output layer of appropriate dimensions.
 def make_audio_ann_model():
     input_layer = input_data(shape=[None, 4000, 1, 1])
-    fc_layer_1 = fully_connected(input_layer, 128,
+    fc_layer_1 = fully_connected(input_layer, 512,
                                  activation='relu',
                                  name='fc_layer_1')
-    fc_layer_2 = fully_connected(fc_layer_1, 3,
-                                 activation='softmax',
+    fc_layer_2 = fully_connected(fc_layer_1, 256,
+                                 activation='relu',
                                  name='fc_layer_2')
-    network = regression(fc_layer_2, optimizer='sgd',
+    fc_layer_3 = fully_connected(fc_layer_2, 128,
+                                 activation='relu',
+                                 name='fc_layer_3')
+    fc_layer_4 = fully_connected(fc_layer_3, 3,
+                                 activation='softmax',
+                                 name='fc_layer_4')
+    network = regression(fc_layer_4, optimizer='sgd',
                          loss='categorical_crossentropy',
                          learning_rate=0.1)
     model = tflearn.DNN(network)
@@ -147,7 +153,13 @@ def train_tfl_audio_ann_model(model, train_X, train_Y, test_X, test_Y, num_epoch
             run_id='audio_ann_model')
 
 ### validating is testing on valid_X and valid_Y.
-def validate_tfl_audio_ann_model(model, valid_X, valid_Y):
-    return test_tfl_audio_ann_model(model, valid_X, valid_Y)
+def validate_tfl_audio_ann_model(model):
+    return test_tfl_audio_ann_model(model, BUZZ3_valid_X, BUZZ3_valid_Y)
 
-  
+buzz1_net_name = "ann_audio_model_buzz1.tfl"
+buzz2_net_name = "ann_audio_model_buzz2.tfl"
+buzz3_net_name = "ann_audio_model_buzz3.tfl"
+
+# model = make_audio_ann_model()
+# train_tfl_audio_ann_model(model, BUZZ2_train_X, BUZZ2_train_Y, BUZZ2_test_X, BUZZ2_test_Y, 15, 8)
+# model.save("nets\\ann_audio_model_buzz2.tfl")
